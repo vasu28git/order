@@ -1,6 +1,8 @@
 
 package com.example.order.Controllers;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,11 @@ public class UserController {
     @PostMapping("/createUser")
     public User createUser(@RequestBody User user) {
         return userRepository.save(user);
+    }
+
+    @GetMapping("/getUserById/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        return userRepository.findById(id);
     }
 
 }
