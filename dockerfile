@@ -1,17 +1,11 @@
-FROM node:18
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
+RUN mvn clean package -DskipTests
 
-RUN npm run build
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 
-RUN npm install -g serve
-
-EXPOSE 3000
-
-CMD ["serve", "-s", "build", "-l", "3000"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
